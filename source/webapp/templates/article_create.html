@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+</head>
+<body>
+<a href="/">На главную</a>
+<h1>Create Article</h1>
+
+<form action="/articles/add/" method="post">
+    {% csrf_token %}
+   
+    <label>Title:</label><br/>
+    <input type="text" name="title"/><br/>
+   
+    <label>Text:</label><br/>
+    <textarea name="content"></textarea><br/>
+   
+    <label>Author:</label><br/>
+    <input type="text" name="author"/><br/>
+    <br/>
+    <input type="submit" value="Send"/>
+</form>
+
+</body>
+</html>
