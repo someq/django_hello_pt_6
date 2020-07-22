@@ -5,9 +5,10 @@
     <title>View</title>
 </head>
 <body>
-    <h1>Future article:</h1>
-    <h2>{{ title }}</h2>
-    <p>{{ content }}</p>
-    <p>By: {{ author }}</p>
+    <p><a href="/">На главную</a></p>
+    <h1>{{ article.title }}</h1>
+    <p>{{ article.text }}</p>
+    <p>By: {{ article.author }} | {{ article.created_at }}</p>
+    <p><a href="/">На главную</a></p>
 </body>
 </html>
