@@ -1,0 +1,152 @@
+[
+{
+  "model": "webapp.article",
+  "pk": 1,
+  "fields": {
+    "title": "New Article",
+    "text": "Long long long - text",
+    "author": "Ivan Ivanych",
+    "status": "new",
+    "created_at": "2020-07-21T14:45:04.525Z",
+    "updated_at": "2020-07-21T14:45:04.525Z"
+  }
+},
+{
+  "model": "webapp.article",
+  "pk": 3,
+  "fields": {
+    "title": "Article 1",
+    "text": "My awesome article 1",
+    "author": "Me",
+    "status": "new",
+    "created_at": "2020-07-21T14:51:30.255Z",
+    "updated_at": "2020-07-21T14:51:30.255Z"
+  }
+},
+{
+  "model": "webapp.article",
+  "pk": 4,
+  "fields": {
+    "title": "Article 2",
+    "text": "My awesome article 2",
+    "author": "Me",
+    "status": "new",
+    "created_at": "2020-07-21T14:51:30.273Z",
+    "updated_at": "2020-07-21T14:51:30.273Z"
+  }
+},
+{
+  "model": "webapp.article",
+  "pk": 5,
+  "fields": {
+    "title": "Article 3",
+    "text": "My awesome article 3",
+    "author": "Me",
+    "status": "new",
+    "created_at": "2020-07-21T14:51:30.292Z",
+    "updated_at": "2020-07-21T14:51:30.292Z"
+  }
+},
+{
+  "model": "webapp.article",
+  "pk": 6,
+  "fields": {
+    "title": "Article 4",
+    "text": "My awesome article 4",
+    "author": "Me",
+    "status": "new",
+    "created_at": "2020-07-21T14:51:30.315Z",
+    "updated_at": "2020-07-21T14:51:30.315Z"
+  }
+},
+{
+  "model": "webapp.article",
+  "pk": 7,
+  "fields": {
+    "title": "Article 5",
+    "text": "My awesome article 55",
+    "author": "Me",
+    "status": "new",
+    "created_at": "2020-07-21T14:51:30.337Z",
+    "updated_at": "2020-07-21T15:21:40.493Z"
+  }
+},
+{
+  "model": "webapp.article",
+  "pk": 8,
+  "fields": {
+    "title": "Article 6",
+    "text": "My awesome article 6",
+    "author": "Me",
+    "status": "new",
+    "created_at": "2020-07-21T14:51:30.355Z",
+    "updated_at": "2020-07-21T14:51:30.355Z"
+  }
+},
+{
+  "model": "webapp.article",
+  "pk": 9,
+  "fields": {
+    "title": "Article 7",
+    "text": "My awesome article 7",
+    "author": "Me",
+    "status": "new",
+    "created_at": "2020-07-21T14:51:30.372Z",
+    "updated_at": "2020-07-21T14:51:30.373Z"
+  }
+},
+{
+  "model": "webapp.article",
+  "pk": 10,
+  "fields": {
+    "title": "Article 8",
+    "text": "My awesome article 8",
+    "author": "Me",
+    "status": "new",
+    "created_at": "2020-07-21T14:51:30.391Z",
+    "updated_at": "2020-07-21T14:51:30.391Z"
+  }
+},
+{
+  "model": "webapp.article",
+  "pk": 11,
+  "fields": {
+    "title": "Article 9",
+    "text": "My awesome article 9",
+    "author": "Me",
+    "status": "new",
+    "created_at": "2020-07-21T14:51:30.408Z",
+    "updated_at": "2020-07-21T14:51:30.408Z"
+  }
+},
+{
+  "model": "webapp.article",
+  "pk": 12,
+  "fields": {
+    "title": "Another Article",
+    "text": "My awesome article 0",
+    "author": "Me",
+    "status": "new",
+    "created_at": "2020-07-21T15:09:12.509Z",
+    "updated_at": "2020-07-21T15:09:12.509Z"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$150000$hDAvqjHknAE8$47FLIZqZxA6HeGgrc2+nZqqOy5mZz9VLWLtFotRfVwg=",
+    "last_login": "2020-07-21T15:14:17Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "\u0410\u0434\u043c\u0438\u043d",
+    "last_name": "\u0410\u0434\u043c\u0438\u043d\u044b\u0447",
+    "email": "admin@admin.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2020-07-21T15:13:39Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]
