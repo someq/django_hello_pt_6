@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from webapp.models import Article, STATUS_CHOICES
 from django.http import HttpResponseNotAllowed
 
@@ -16,7 +16,7 @@ def index_view(request):
 
 def article_view(request):
     article_id = request.GET.get('pk')
-    article = Article.objects.get(pk=article_id)
+    article = get_object_or_404(Article, pk=article_id)
     context = {'article': article}
     return render(request, 'article_view.html', context)
 
