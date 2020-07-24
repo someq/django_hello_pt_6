@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from webapp.models import Article, STATUS_CHOICES
 from django.http import HttpResponseNotAllowed
 
@@ -32,8 +32,8 @@ def article_create_view(request):
         author = request.POST.get('author')
         status = request.POST.get('status')
         article = Article.objects.create(title=title, text=text, author=author, status=status)
-        context = {'article': article}
-        return render(request, 'article_view.html', context)
+
+        return redirect(f'/article/?pk={article.pk}')
     else:
         return HttpResponseNotAllowed(permitted_methods=['GET', 'POST'])
 
