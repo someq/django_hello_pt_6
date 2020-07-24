@@ -14,9 +14,8 @@ def index_view(request):
     })
 
 
-def article_view(request):
-    article_id = request.GET.get('pk')
-    article = get_object_or_404(Article, pk=article_id)
+def article_view(request, pk):
+    article = get_object_or_404(Article, pk=pk)
     context = {'article': article}
     return render(request, 'article_view.html', context)
 
@@ -33,7 +32,7 @@ def article_create_view(request):
         status = request.POST.get('status')
         article = Article.objects.create(title=title, text=text, author=author, status=status)
 
-        return redirect(f'/article/?pk={article.pk}')
+        return redirect(f'/article/{article.pk}/')
     else:
         return HttpResponseNotAllowed(permitted_methods=['GET', 'POST'])
 

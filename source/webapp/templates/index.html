@@ -14,7 +14,7 @@
     <h1>Статьи:</h1>
     <p><a href="/articles/add/">Добавить статью</a></p>
     {% for article in articles %}
-        <h3><a href="/article?pk={{ article.pk }}">{{ article.title }}</a></h3>
+        <h3><a href="/article/{{ article.pk }}/">{{ article.title }}</a></h3>
         <p>Статус: ({{ article.status }} | {{ article.get_status_display }})</p>
         <p>{{ article.author }} | {{ article.created_at }}</p>
         <div>{{ article.text }}</div>
