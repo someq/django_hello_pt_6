@@ -5,10 +5,10 @@
     <title>Create</title>
 </head>
 <body>
-<a href="/">На главную</a>
+<a href="{% url "index" %}">На главную</a>
 <h1>Create Article</h1>
 
-<form action="/articles/add/" method="post">
+<form action="{% url "article_create" %}" method="post">
     {% csrf_token %}
    
     <label>Title:</label><br/>

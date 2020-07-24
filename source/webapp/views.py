@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from webapp.models import Article, STATUS_CHOICES
 from django.http import HttpResponseNotAllowed
+from django.urls import reverse
+
+from webapp.models import Article, STATUS_CHOICES
 
 
 def index_view(request):
@@ -32,7 +34,8 @@ def article_create_view(request):
         status = request.POST.get('status')
         article = Article.objects.create(title=title, text=text, author=author, status=status)
 
-        return redirect(f'/article/{article.pk}/')
+        # redirect_url = reverse('article_view', kwargs={'pk': article.pk})
+        return redirect('article_view', pk=article.pk)
     else:
         return HttpResponseNotAllowed(permitted_methods=['GET', 'POST'])
 
