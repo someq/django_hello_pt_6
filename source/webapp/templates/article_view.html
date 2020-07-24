@@ -1,14 +1,24 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>View</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <p><a href="{% url 'index' %}">На главную</a></p>
+<nav class="navbar">
+    <div class="container">
+        <ul class="menu">
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'article_create' %}">Add Article</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
     <h1>{{ article.title }}</h1>
     <p>{{ article.text }}</p>
     <p>By: {{ article.author }} | {{ article.created_at }}</p>
-    <p><a href="{% url 'index' %}">На главную</a></p>
+</div>
 </body>
 </html>

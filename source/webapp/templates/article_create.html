@@ -1,41 +1,50 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Create</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-<a href="{% url "index" %}">На главную</a>
-<h1>Create Article</h1>
+<nav class="navbar">
+   <div class="container">
+       <ul class="menu">
+           <li><a href="{% url 'index' %}">Home</a></li>
+       </ul>
+   </div>
+</nav>
+<div class="container">
+    <h1>Create Article</h1>
 
-<form action="{% url "article_create" %}" method="post">
-    {% csrf_token %}
-   
-    <label>Title:</label><br/>
-    <input type="text" name="title"/><br/>
-   
-    <label>Text:</label><br/>
-    <textarea name="text"></textarea><br/>
-   
-    <label>Author:</label><br/>
-    <input type="text" name="author"/><br/>
+    <form action="{% url "article_create" %}" method="post">
+        {% csrf_token %}
 
-    <label for="id-status">Status:</label><br/>
-    <select name="status" id="id-status">
-{#        Вариант 1: обратиться по индексам в каждой паре #}
-{#        {% for choice in status_choices %}#}
-{#            <option value="{{ choice.0 }}">{{ choice.1 }}</option>#}
-{#        {% endfor %}#}
+        <label>Title:</label><br/>
+        <input type="text" name="title"/><br/>
 
-{#        Вариант 2: сразу распаковать #}
-        {% for value, label in status_choices %}
-            <option value="{{ value }}">{{ label }}</option>
-        {% endfor %}
-    </select><br/>
+        <label>Text:</label><br/>
+        <textarea name="text"></textarea><br/>
 
-    <br/>
-    <input type="submit" value="Send"/>
-</form>
+        <label>Author:</label><br/>
+        <input type="text" name="author"/><br/>
 
+        <label for="id-status">Status:</label><br/>
+        <select name="status" id="id-status">
+    {#        Вариант 1: обратиться по индексам в каждой паре #}
+    {#        {% for choice in status_choices %}#}
+    {#            <option value="{{ choice.0 }}">{{ choice.1 }}</option>#}
+    {#        {% endfor %}#}
+
+    {#        Вариант 2: сразу распаковать #}
+            {% for value, label in status_choices %}
+                <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select><br/>
+
+        <br/>
+        <input type="submit" value="Send"/>
+    </form>
+</div>
 </body>
 </html>
