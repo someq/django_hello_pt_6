@@ -3,6 +3,7 @@ from django.http import HttpResponseNotAllowed
 from django.urls import reverse
 
 from webapp.models import Article, STATUS_CHOICES
+from .forms import ArticleForm
 
 
 def index_view(request):
@@ -24,18 +25,25 @@ def article_view(request, pk):
 
 def article_create_view(request):
     if request.method == "GET":
+        form = ArticleForm()
         return render(request, 'article_create.html', context={
-            'status_choices': STATUS_CHOICES
+            'form': form
         })
     elif request.method == 'POST':
-        title = request.POST.get('title')
-        text = request.POST.get('text')
-        author = request.POST.get('author')
-        status = request.POST.get('status')
-        article = Article.objects.create(title=title, text=text, author=author, status=status)
-
-        # redirect_url = reverse('article_view', kwargs={'pk': article.pk})
-        return redirect('article_view', pk=article.pk)
+        form = ArticleForm(data=request.POST)
+        if form.is_valid():
+            # article = Article.objects.create(**form.cleaned_data)
+            article = Article.objects.create(
+                title=form.cleaned_data['title'],
+                text=form.cleaned_data['text'],
+                author=form.cleaned_data['author'],
+                status=form.cleaned_data['status']
+            )
+            return redirect('article_view', pk=article.pk)
+        else:
+            return render(request, 'article_create.html', context={
+                'form': form
+            })
     else:
         return HttpResponseNotAllowed(permitted_methods=['GET', 'POST'])
 

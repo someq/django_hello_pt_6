@@ -4,31 +4,21 @@
 
 {% block content %}
     <h1>Create Article</h1>
-
     <form action="{% url "article_create" %}" method="post">
         {% csrf_token %}
 
-        <label>Title:</label><br/>
-        <input type="text" name="title"/><br/>
+{#        {{ form.as_p }}#}
+{#        {{ form.as_table }}#}
+{#        {{ form.as_ul }}#}
 
-        <label>Text:</label><br/>
-        <textarea name="text"></textarea><br/>
+{#        {% for field in form %}#}
+{#            {% include 'partial/form_field.html' %}#}
+{#        {% endfor %}#}
 
-        <label>Author:</label><br/>
-        <input type="text" name="author"/><br/>
-
-        <label for="id-status">Status:</label><br/>
-        <select name="status" id="id-status">
-    {#        Вариант 1: обратиться по индексам в каждой паре #}
-    {#        {% for choice in status_choices %}#}
-    {#            <option value="{{ choice.0 }}">{{ choice.1 }}</option>#}
-    {#        {% endfor %}#}
-
-    {#        Вариант 2: сразу распаковать #}
-            {% for value, label in status_choices %}
-                <option value="{{ value }}">{{ label }}</option>
-            {% endfor %}
-        </select><br/>
+        {% include 'partial/form_field.html' with field=form.title %}
+        {% include 'partial/form_field.html' with field=form.text %}
+        {% include 'partial/form_field.html' with field=form.author %}
+        {% include 'partial/form_field.html' with field=form.status %}
 
         <br/>
         <input type="submit" value="Send"/>
