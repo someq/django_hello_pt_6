@@ -13,13 +13,16 @@
         {% csrf_token %}
 
         <label>Title:</label><br/>
-        <input type="text" name="title" value="{{ article.title }}"/><br/>
+        <input type="text" name="title" value="{{ article.title }}" required/><br/>
+        {% if errors.title %}<p class="error">{{ errors.title }}</p>{% endif %}
 
         <label>Text:</label><br/>
-        <textarea name="text">{{ article.text }}</textarea><br/>
+        <textarea name="text" required>{{ article.text }}</textarea><br/>
+        {% if errors.text %}<p class="error">{{ errors.text }}</p>{% endif %}
 
         <label>Author:</label><br/>
-        <input type="text" name="author" value="{{ article.author }}"/><br/>
+        <input type="text" name="author" value="{{ article.author }}" required/><br/>
+        {% if errors.author %}<p class="error">{{ errors.author }}</p>{% endif %}
 
         <label for="id-status">Status:</label><br/>
         <select name="status" id="id-status">
