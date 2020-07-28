@@ -25,7 +25,7 @@
         <select name="status" id="id-status">
             {% for value, label in status_choices %}
                 <option value="{{ value }}"
-                        {% if value == article.value %}selected{% endif %}>
+                        {% if value == article.status %}selected{% endif %}>
                     {{ label }}
                 </option>
             {% endfor %}
