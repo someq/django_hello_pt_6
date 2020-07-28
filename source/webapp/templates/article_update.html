@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Update{% endblock %}
+
+{% block menu %}
+    <li><a href="{% url 'article_view' article.pk %}">Отмена</a></li>
+{% endblock %}
+
+{% block content %}
+    <h1>Update Article</h1>
+
+    <form action="{% url "article_update" article.pk %}" method="post">
+        {% csrf_token %}
+
+        <label>Title:</label><br/>
+        <input type="text" name="title" value="{{ article.title }}"/><br/>
+
+        <label>Text:</label><br/>
+        <textarea name="text">{{ article.text }}</textarea><br/>
+
+        <label>Author:</label><br/>
+        <input type="text" name="author" value="{{ article.author }}"/><br/>
+
+        <label for="id-status">Status:</label><br/>
+        <select name="status" id="id-status">
+            {% for value, label in status_choices %}
+                <option value="{{ value }}"
+                        {% if value == article.value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select><br/>
+
+        <br/>
+        <input type="submit" value="Send"/>
+    </form>
+{% endblock %}
