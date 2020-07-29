@@ -63,9 +63,11 @@ def article_update_view(request, pk):
             'text': article.text,
             'author': article.author,
             'status': article.status,
-            # для дат это не надо, только для DateTime.
+            # форматирование перед выводом для DateTime.
             'publish_at': make_naive(article.publish_at)\
                 .strftime(BROWSER_DATETIME_FORMAT)
+            # для дат выглядит просто как:
+            # 'publish_at': article.publish_at
         })
         return render(request, 'article_update.html', context={
             'form': form,
