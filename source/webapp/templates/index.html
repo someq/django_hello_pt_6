@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block title %}Hello{% endblock %}
 
@@ -8,6 +8,7 @@
         <h3><a href="{% url "article_view" article.pk %}">{{ article.title }}</a></h3>
         <p>Статус: ({{ article.status }} | {{ article.get_status_display }})</p>
         <p>{{ article.author }} | {{ article.created_at }}</p>
-        <p><a href="{% url "article_update" article.pk %}">Update</a></p>
+        <p><a href="{% url 'article_update' article.pk %}">Update</a></p>
+        <p><a href="{% url 'article_delete' article.pk %}">Delete</a></p>
     {% endfor %}
 {% endblock %}
