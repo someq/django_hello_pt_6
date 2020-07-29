@@ -12,27 +12,9 @@
     <form action="{% url "article_update" article.pk %}" method="post">
         {% csrf_token %}
 
-        <label>Title:</label><br/>
-        <input type="text" name="title" value="{{ article.title }}" required/><br/>
-        {% if errors.title %}<p class="error">{{ errors.title }}</p>{% endif %}
-
-        <label>Text:</label><br/>
-        <textarea name="text" required>{{ article.text }}</textarea><br/>
-        {% if errors.text %}<p class="error">{{ errors.text }}</p>{% endif %}
-
-        <label>Author:</label><br/>
-        <input type="text" name="author" value="{{ article.author }}" required/><br/>
-        {% if errors.author %}<p class="error">{{ errors.author }}</p>{% endif %}
-
-        <label for="id-status">Status:</label><br/>
-        <select name="status" id="id-status">
-            {% for value, label in status_choices %}
-                <option value="{{ value }}"
-                        {% if value == article.status %}selected{% endif %}>
-                    {{ label }}
-                </option>
-            {% endfor %}
-        </select><br/>
+        {% for field in form %}
+            {% include 'partial/form_field.html' %}
+        {% endfor %}
 
         <br/>
         <input type="submit" value="Send"/>

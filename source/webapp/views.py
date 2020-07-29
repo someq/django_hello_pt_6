@@ -49,35 +49,32 @@ def article_create_view(request):
 
 
 def article_update_view(request, pk):
-    # article = Article.objects.get(pk=pk)
     article = get_object_or_404(Article, pk=pk)
     if request.method == "GET":
+        form = ArticleForm(initial={
+            'title': article.title,
+            'text': article.text,
+            'author': article.author,
+            'status': article.status
+        })
         return render(request, 'article_update.html', context={
-            'status_choices': STATUS_CHOICES,
+            'form': form,
             'article': article
         })
     elif request.method == 'POST':
-        errors = {}
-        article.title = request.POST.get('title')
-        if not article.title:
-            errors['title'] = 'This field is required!'
-        article.text = request.POST.get('text')
-        if not article.text:
-            errors['text'] = 'This field is required!'
-        article.author = request.POST.get('author')
-        if not article.author:
-            errors['author'] = 'This field is required!'
-        article.status = request.POST.get('status')
-
-        if errors:
+        form = ArticleForm(data=request.POST)
+        if form.is_valid():
+            # Article.objects.filter(pk=pk).update(**form.cleaned_data)
+            article.title = form.cleaned_data['title']
+            article.text = form.cleaned_data['text']
+            article.author = form.cleaned_data['author']
+            article.status = form.cleaned_data['status']
+            article.save()
+            return redirect('article_view', pk=article.pk)
+        else:
             return render(request, 'article_update.html', context={
-                'status_choices': STATUS_CHOICES,
                 'article': article,
-                'errors': errors
+                'form': form
             })
-
-        article.save()
-        return redirect('article_view', pk=article.pk)
     else:
         return HttpResponseNotAllowed(permitted_methods=['GET', 'POST'])
-
