@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 STATUS_CHOICES = [
@@ -15,6 +16,7 @@ class Article(models.Model):
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='new', verbose_name='Модерация')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Время изменения')
+    publish_at = models.DateTimeField(verbose_name="Время публикации", blank=True, default=timezone.now)
 
     def __str__(self):
         return "{}. {}".format(self.pk, self.title)

@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotAllowed
-from django.urls import reverse
+from django.utils.timezone import make_naive
 
-from webapp.models import Article, STATUS_CHOICES
-from .forms import ArticleForm
+from webapp.models import Article
+from .forms import ArticleForm, BROWSER_DATETIME_FORMAT
 
 
 def index_view(request):
@@ -18,7 +18,13 @@ def index_view(request):
 
 
 def article_view(request, pk):
+    # try:
+    #     article = Article.objects.get(pk=pk)
+    # except Article.DoesNotExist:
+    #     raise Http404
+
     article = get_object_or_404(Article, pk=pk)
+
     context = {'article': article}
     return render(request, 'article_view.html', context)
 
@@ -37,7 +43,8 @@ def article_create_view(request):
                 title=form.cleaned_data['title'],
                 text=form.cleaned_data['text'],
                 author=form.cleaned_data['author'],
-                status=form.cleaned_data['status']
+                status=form.cleaned_data['status'],
+                publish_at=form.cleaned_data['publish_at']
             )
             return redirect('article_view', pk=article.pk)
         else:
@@ -55,7 +62,10 @@ def article_update_view(request, pk):
             'title': article.title,
             'text': article.text,
             'author': article.author,
-            'status': article.status
+            'status': article.status,
+            # для дат это не надо, только для DateTime.
+            'publish_at': make_naive(article.publish_at)\
+                .strftime(BROWSER_DATETIME_FORMAT)
         })
         return render(request, 'article_update.html', context={
             'form': form,
@@ -69,6 +79,7 @@ def article_update_view(request, pk):
             article.text = form.cleaned_data['text']
             article.author = form.cleaned_data['author']
             article.status = form.cleaned_data['status']
+            article.publish_at = form.cleaned_data['publish_at']
             article.save()
             return redirect('article_view', pk=article.pk)
         else:
