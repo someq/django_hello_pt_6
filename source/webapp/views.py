@@ -1,44 +1,47 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotAllowed
 from django.utils.timezone import make_naive
+from django.views.generic import View, TemplateView
 
 from webapp.models import Article
 from .forms import ArticleForm, BROWSER_DATETIME_FORMAT
 
 
-def index_view(request):
-    is_admin = request.GET.get('is_admin', None)
-    if is_admin:
-        data = Article.objects.all()
-    else:
-        data = Article.objects.filter(status='moderated')
-    return render(request, 'index.html', context={
-        'articles': data
-    })
+class IndexView(View):
+    def get(self, request):
+        is_admin = request.GET.get('is_admin', None)
+        if is_admin:
+            data = Article.objects.all()
+        else:
+            data = Article.objects.filter(status='moderated')
+        return render(request, 'index.html', context={
+            'articles': data
+        })
 
 
-def article_view(request, pk):
-    # try:
-    #     article = Article.objects.get(pk=pk)
-    # except Article.DoesNotExist:
-    #     raise Http404
+class ArticleView(TemplateView):
+    template_name = 'article_view.html'
 
-    article = get_object_or_404(Article, pk=pk)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    context = {'article': article}
-    return render(request, 'article_view.html', context)
+        pk = self.kwargs.get('pk')
+        article = get_object_or_404(Article, pk=pk)
+
+        context['article'] = article
+        return context
 
 
-def article_create_view(request):
-    if request.method == "GET":
+class ArticleCreateView(View):
+    def get(self, request):
         form = ArticleForm()
         return render(request, 'article_create.html', context={
             'form': form
         })
-    elif request.method == 'POST':
+
+    def post(self, request):
         form = ArticleForm(data=request.POST)
         if form.is_valid():
-            # article = Article.objects.create(**form.cleaned_data)
             article = Article.objects.create(
                 title=form.cleaned_data['title'],
                 text=form.cleaned_data['text'],
@@ -51,29 +54,32 @@ def article_create_view(request):
             return render(request, 'article_create.html', context={
                 'form': form
             })
-    else:
-        return HttpResponseNotAllowed(permitted_methods=['GET', 'POST'])
 
 
-def article_update_view(request, pk):
-    article = get_object_or_404(Article, pk=pk)
-    if request.method == "GET":
+class ArticleUpdateView(TemplateView):
+    template_name = 'article_update.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        pk = self.kwargs.get('pk')
+        article = get_object_or_404(Article, pk=pk)
         form = ArticleForm(initial={
             'title': article.title,
             'text': article.text,
             'author': article.author,
             'status': article.status,
-            # форматирование перед выводом для DateTime.
             'publish_at': make_naive(article.publish_at)\
                 .strftime(BROWSER_DATETIME_FORMAT)
-            # для дат выглядит просто как:
-            # 'publish_at': article.publish_at
         })
-        return render(request, 'article_update.html', context={
-            'form': form,
-            'article': article
-        })
-    elif request.method == 'POST':
+
+        context['article'] = article
+        context['form'] = form
+
+        return context
+
+    def post(self, request, pk):
+        article = get_object_or_404(Article, pk=pk)
         form = ArticleForm(data=request.POST)
         if form.is_valid():
             # Article.objects.filter(pk=pk).update(**form.cleaned_data)
@@ -85,12 +91,10 @@ def article_update_view(request, pk):
             article.save()
             return redirect('article_view', pk=article.pk)
         else:
-            return render(request, 'article_update.html', context={
+            return self.render_to_response({
                 'article': article,
                 'form': form
             })
-    else:
-        return HttpResponseNotAllowed(permitted_methods=['GET', 'POST'])
 
 
 def article_delete_view(request, pk):
