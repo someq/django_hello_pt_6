@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotAllowed
+from django.urls import reverse
 from django.utils.timezone import make_naive
 from django.views.generic import View, TemplateView
 
 from webapp.models import Article
 from .forms import ArticleForm, BROWSER_DATETIME_FORMAT
+from .base_views import FormView as CustomFormView
 
 
 class IndexView(View):
@@ -38,26 +40,20 @@ class ArticleView(TemplateView):
         return context
 
 
-class ArticleCreateView(View):
-    def get(self, request):
-        form = ArticleForm()
-        return render(request, 'article_create.html', context={
-            'form': form
-        })
+class ArticleCreateView(CustomFormView):
+    template_name = 'article_create.html'
+    form_class = ArticleForm
 
-    def post(self, request):
-        form = ArticleForm(data=request.POST)
-        if form.is_valid():
-            data = {}
-            for key, value in form.cleaned_data.items():
-                if value is not None:
-                    data[key] = value
-            article = Article.objects.create(**data)
-            return redirect('article_view', pk=article.pk)
-        else:
-            return render(request, 'article_create.html', context={
-                'form': form
-            })
+    def form_valid(self, form):
+        data = {}
+        for key, value in form.cleaned_data.items():
+            if value is not None:
+                data[key] = value
+        self.article = Article.objects.create(**data)
+        return super().form_valid(form)
+
+    def get_redirect_url(self):
+        return reverse('article_view', kwargs={'pk': self.article.pk})
 
 
 class ArticleUpdateView(TemplateView):
