@@ -18,6 +18,13 @@
             <li><a href="{% url 'article_create' %}">Add Article</a></li>
             {% block menu %}{% endblock %}
         </ul>
+
+        <div class="search-form">
+            <form action="{% url 'index' %}" method="GET">
+                <input type="text" name="search">
+                <input type="submit" value="Найти">
+            </form>
+        </div>
     </div>
 </nav>
 <div class="container">
