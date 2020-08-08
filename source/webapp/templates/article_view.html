@@ -12,6 +12,7 @@
     <p class="pre">{{ article.text }}</p>
     <p>By: {{ article.author }} | {{ article.created_at|date:"d.m.Y H:i:s" }}</p>
     <p>Published at: {{ article.publish_at|date:"d.m.Y H:i:s" }}</p>
+    <p>Tags: {% for tag in article.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
 
     <h3>Comments:</h3>
     {% for comment in article.comments.all %}
