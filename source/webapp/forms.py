@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import ValidationError
+
 from .models import STATUS_CHOICES, Article, Tag
 
 default_status = STATUS_CHOICES[0][0]
@@ -22,6 +24,26 @@ class ArticleForm(forms.Form):
     # для полей типа DateField
     # publish_at = forms.DateField(..., widget=forms.DateInput(attrs={'type': 'date'}))
     tags = forms.ModelMultipleChoiceField(required=False, label='Теги', queryset=Tag.objects.all())
+
+    def clean_title(self):
+        title = self.cleaned_data['title']
+        if len(title) < 10:
+            raise ValidationError('Title is too short!')
+        return title
+
+    def clean(self):
+        cleaned_data = super().clean()
+        errors = []
+        text = cleaned_data.get('text')
+        title = cleaned_data.get('title')
+        author = cleaned_data.get('author')
+        if text and title and text == title:
+            errors.append(ValidationError("Text of the article should not duplicate it's title!"))
+        if title and author and title == author:
+            errors.append(ValidationError("You should not write about yourself! It's a spam!"))
+        if errors:
+            raise ValidationError(errors)
+        return cleaned_data
 
 
 class CommentForm(forms.Form):
