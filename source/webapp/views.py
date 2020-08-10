@@ -45,13 +45,7 @@ class ArticleCreateView(CustomFormView):
     form_class = ArticleForm
 
     def form_valid(self, form):
-        data = {}
-        tags = form.cleaned_data.pop('tags')
-        for key, value in form.cleaned_data.items():
-            if value is not None:
-                data[key] = value
-        self.article = Article.objects.create(**data)
-        self.article.tags.set(tags)
+        self.article = form.save()
         return super().form_valid(form)
 
     def get_redirect_url(self):
@@ -71,22 +65,14 @@ class ArticleUpdateView(FormView):
         context['article'] = self.article
         return context
 
-    def get_initial(self):
-        initial = {}
-        for key in 'title', 'text', 'author', 'status':
-            initial[key] = getattr(self.article, key)
-        initial['publish_at'] = make_naive(self.article.publish_at)\
-            .strftime(BROWSER_DATETIME_FORMAT)
-        initial['tags'] = self.article.tags.all()
-        return initial
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.pop('initial')
+        kwargs['instance'] = self.article
+        return kwargs
 
     def form_valid(self, form):
-        tags = form.cleaned_data.pop('tags')
-        for key, value in form.cleaned_data.items():
-            if value is not None:
-                setattr(self.article, key, value)
-        self.article.save()
-        self.article.tags.set(tags)
+        self.article = form.save()
         return super().form_valid(form)
 
     def get_success_url(self):
