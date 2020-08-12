@@ -43,7 +43,7 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = ['title', 'text', 'author', 'status', 'publish_at', 'tags']
-        # widgets = {'publish_at': forms.DateTimeInput(attrs={'type': 'datetime-local'})}
+        widgets = {'tags': forms.CheckboxSelectMultiple}
 
     def clean(self):
         cleaned_data = super().clean()

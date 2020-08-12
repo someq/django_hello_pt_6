@@ -5,8 +5,14 @@
         <span class="red">*</span>
     {% endif %}
     {{ field.label }}:
-</label><br/>
-{{ field|add_class:'form-input'|add_error_class:'form-error' }}<br/>
+</label>
+<br/>
+{% if field|field_type == 'modelmultiplechoicefield' %}
+    {{ field|add_class:'form-checkboxes'|add_error_class:'form-error' }}
+{% else %}
+    {{ field|add_class:'form-input'|add_error_class:'form-error' }}
+{% endif %}
+<br/>
 {% for error in field.errors %}
     <p class="error">{{ error }}</p>
 {% endfor %}
