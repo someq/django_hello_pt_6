@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotAllowed
 from django.urls import reverse
@@ -65,9 +67,12 @@ class ArticleUpdateView(FormView):
         context['article'] = self.article
         return context
 
+    def get_initial(self):
+        return {'publish_at': make_naive(self.article.publish_at)\
+            .strftime(BROWSER_DATETIME_FORMAT)}
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs.pop('initial')
         kwargs['instance'] = self.article
         return kwargs
 
