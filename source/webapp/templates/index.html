@@ -2,6 +2,15 @@
 
 {% block title %}Hello{% endblock %}
 
+{% block search %}
+    <div class="search-form">
+        <form action="{% url 'index' %}" method="GET">
+            {{ form.search }}
+            <input type="submit" value="Найти">
+        </form>
+    </div>
+{% endblock %}
+
 {% block content %}
     <h1>Статьи:</h1>
     {% if is_paginated %}
