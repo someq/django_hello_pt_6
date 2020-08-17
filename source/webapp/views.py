@@ -4,16 +4,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotAllowed
 from django.urls import reverse
 from django.utils.timezone import make_naive
-from django.views.generic import View, TemplateView, FormView
+from django.views.generic import ListView, TemplateView, FormView
 
 from webapp.models import Article
 from .forms import ArticleForm, BROWSER_DATETIME_FORMAT
 from .base_views import FormView as CustomFormView, ListView as CustomListView
 
 
-class IndexView(CustomListView):
+class IndexView(ListView):
     template_name = 'index.html'
-    context_key = 'articles'
+    context_object_name = 'articles'
 
     def get_queryset(self):
         data = Article.objects.all()
@@ -26,7 +26,7 @@ class IndexView(CustomListView):
         if search:
             data = data.filter(title__icontains=search)
 
-        return data
+        return data.order_by('-created_at')
 
 
 class ArticleView(TemplateView):
