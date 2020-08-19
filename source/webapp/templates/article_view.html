@@ -16,7 +16,10 @@
         <p>Tags: {% for tag in article.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
         <hr>
         <h3>Comments:</h3>
-        {% for comment in article.comments.all %}
+        {% if is_paginated %}
+            {% include 'partial/pagination.html' %}
+        {% endif %}
+        {% for comment in comments %}
             <div class="box">
                 <h4>{{ comment.author }} ({{ comment.created_at }})</h4>
                 <div class="pre">{{ comment.text }}</div>
@@ -24,5 +27,8 @@
         {% empty %}
             <p>Нет комментариев</p>
         {% endfor %}
+        {% if is_paginated %}
+            {% include 'partial/pagination.html' %}
+        {% endif %}
     </div>
 {% endblock %}
