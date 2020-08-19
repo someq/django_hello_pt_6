@@ -50,22 +50,24 @@ class ArticleView(TemplateView):
 
         pk = self.kwargs.get('pk')
         article = get_object_or_404(Article, pk=pk)
+        comments, page, is_paginated = self.paginate_comments(article)
 
+        context['article'] = article
+        context['comments'] = comments
+        context['page_obj'] = page
+        context['is_paginated'] = is_paginated
+        return context
+
+    def paginate_comments(self, article):
         comments = article.comments.all().order_by('-created_at')
         if comments.count() > 0:
             paginator = Paginator(comments, self.paginate_comments_by, orphans=self.paginate_comments_orphans)
             page_number = self.request.GET.get('page', 1)
             page = paginator.get_page(page_number)
-
-            context['page_obj'] = page
-            context['is_paginated'] = paginator.num_pages > 1  # page.has_other_pages()
-            context['comments'] = page.object_list
+            is_paginated = paginator.num_pages > 1  # page.has_other_pages()
+            return page.object_list, page, is_paginated
         else:
-            context['is_paginated'] = False
-            context['comments'] = comments
-
-        context['article'] = article
-        return context
+            return comments, None, False
 
 
 class ArticleCreateView(CustomFormView):
