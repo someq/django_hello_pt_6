@@ -17,13 +17,6 @@ class IndexView(ListView):
     paginate_by = 2
     paginate_orphans = 0
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        form = SimpleSearchForm(data=self.request.GET)
-        if form.is_valid():
-            search = form.cleaned_data['search']
-            kwargs['search'] = search
-        return super().get_context_data(object_list=object_list, **kwargs)
-
     def get_queryset(self):
         data = Article.objects.all()
 
