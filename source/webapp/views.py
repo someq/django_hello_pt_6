@@ -21,7 +21,6 @@ class IndexView(ListView):
         if form.is_valid():
             search = form.cleaned_data['search']
             kwargs['search'] = search
-        kwargs['form'] = form
         return super().get_context_data(object_list=object_list, **kwargs)
 
     def get_queryset(self):

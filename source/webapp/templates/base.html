@@ -23,13 +23,13 @@
             {% block menu %}{% endblock %}
         </ul>
 
-{#        <div class="search-form">#}
-{#            <form action="{% url 'index' %}" method="GET">#}
-{#                <input type="text" name="search">#}
-{#                <input type="submit" value="Найти">#}
-{#            </form>#}
-{#        </div>#}
         {% block search %}
+            <div class="search-form">
+                <form action="{% url 'index' %}" method="GET">
+                    {{ search_form.search }}
+                    <input type="submit" value="Найти">
+                </form>
+            </div>
         {% endblock %}
     </div>
 </nav>
