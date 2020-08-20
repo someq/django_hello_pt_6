@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotAllowed
 from django.urls import reverse
 from django.utils.timezone import make_naive
-from django.views.generic import ListView, DetailView, FormView
+from django.views.generic import ListView, DetailView, FormView, CreateView
 
 from webapp.models import Article
 from webapp.forms import ArticleForm, BROWSER_DATETIME_FORMAT, SimpleSearchForm
@@ -61,12 +61,12 @@ class ArticleView(DetailView):
             return comments, None, False
 
 
-class ArticleCreateView(CustomCreateView):
+class ArticleCreateView(CreateView):
     template_name = 'article/article_create.html'
     form_class = ArticleForm
     model = Article
 
-    def get_redirect_url(self):
+    def get_success_url(self):
         return reverse('article_view', kwargs={'pk': self.object.pk})
 
 

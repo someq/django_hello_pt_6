@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect
+from django.views.generic import CreateView
 
-from .base_views import CreateView
 from webapp.models import Comment, Article
 from webapp.forms import ArticleCommentForm
 
