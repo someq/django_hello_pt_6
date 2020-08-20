@@ -7,19 +7,4 @@
 
     {% url "article_create" as action_url %}
     {% include 'partial/form.html' with action_url=action_url form_method='post' %}
-
-{#    <form>#}
-{#        {% for field in form %}#}
-{#            {% include 'partial/form_field.html' %}#}
-{#        {% endfor %}#}
-
-{#        {{ form.as_p }}#}
-{#        {{ form.as_table }}#}
-{#        {{ form.as_ul }}#}
-
-{#        {% include 'partial/form_field.html' with field=form.title %}#}
-{#        {% include 'partial/form_field.html' with field=form.text %}#}
-{#        {% include 'partial/form_field.html' with field=form.author %}#}
-{#        {% include 'partial/form_field.html' with field=form.status %}#}
-{#    </form>#}
 {% endblock %}

@@ -8,7 +8,7 @@ from django.views.generic import ListView, DetailView, FormView
 
 from webapp.models import Article
 from webapp.forms import ArticleForm, BROWSER_DATETIME_FORMAT, SimpleSearchForm
-from .base_views import FormView as CustomFormView, CreateView as CustomCreateView
+from .base_views import CreateView as CustomCreateView
 
 
 class IndexView(ListView):

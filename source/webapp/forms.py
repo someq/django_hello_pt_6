@@ -3,8 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import BaseValidator
 from django.utils.deconstruct import deconstructible
 
-from .models import STATUS_CHOICES, Article, Tag
-
+from .models import STATUS_CHOICES, Article, Comment
 
 default_status = STATUS_CHOICES[0][0]
 
@@ -66,3 +65,9 @@ class ArticleForm(forms.ModelForm):
 
 class SimpleSearchForm(forms.Form):
     search = forms.CharField(max_length=100, required=False, label="Найти")
+
+
+class ArticleCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['author', 'text']
