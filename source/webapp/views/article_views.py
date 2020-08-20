@@ -7,8 +7,8 @@ from django.utils.timezone import make_naive
 from django.views.generic import ListView, TemplateView, FormView
 
 from webapp.models import Article
-from .forms import ArticleForm, BROWSER_DATETIME_FORMAT, SimpleSearchForm
-from .base_views import FormView as CustomFormView, ListView as CustomListView
+from webapp.forms import ArticleForm, BROWSER_DATETIME_FORMAT, SimpleSearchForm
+from .base_views import FormView as CustomFormView, DetailView as CustomDetailView
 
 
 class IndexView(ListView):
@@ -33,22 +33,21 @@ class IndexView(ListView):
         return data.order_by('-created_at')
 
 
-class ArticleView(TemplateView):
+class ArticleView(CustomDetailView):
     template_name = 'article/article_view.html'
+    model = Article
+    context_key = 'article'
     paginate_comments_by = 2
     paginate_comments_orphans = 0
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        pk = self.kwargs.get('pk')
-        article = get_object_or_404(Article, pk=pk)
-        comments, page, is_paginated = self.paginate_comments(article)
-
-        context['article'] = article
+        comments, page, is_paginated = self.paginate_comments(context['article'])
         context['comments'] = comments
         context['page_obj'] = page
         context['is_paginated'] = is_paginated
+
         return context
 
     def paginate_comments(self, article):
