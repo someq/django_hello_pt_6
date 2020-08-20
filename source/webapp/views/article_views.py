@@ -8,7 +8,7 @@ from django.views.generic import ListView, DetailView, FormView
 
 from webapp.models import Article
 from webapp.forms import ArticleForm, BROWSER_DATETIME_FORMAT, SimpleSearchForm
-from .base_views import FormView as CustomFormView, DetailView as CustomDetailView
+from .base_views import FormView as CustomFormView, CreateView as CustomCreateView
 
 
 class IndexView(ListView):
@@ -61,16 +61,13 @@ class ArticleView(DetailView):
             return comments, None, False
 
 
-class ArticleCreateView(CustomFormView):
+class ArticleCreateView(CustomCreateView):
     template_name = 'article/article_create.html'
     form_class = ArticleForm
-
-    def form_valid(self, form):
-        self.article = form.save()
-        return super().form_valid(form)
+    model = Article
 
     def get_redirect_url(self):
-        return reverse('article_view', kwargs={'pk': self.article.pk})
+        return reverse('article_view', kwargs={'pk': self.object.pk})
 
 
 class ArticleUpdateView(FormView):

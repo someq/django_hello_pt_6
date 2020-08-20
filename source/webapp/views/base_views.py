@@ -59,3 +59,33 @@ class DetailView(TemplateView):
     def get_object(self):
         pk = self.kwargs.get(self.key_kwarg)
         return get_object_or_404(self.model, pk=pk)
+
+
+class CreateView(View):
+    form_class = None
+    template_name = None
+    model = None
+    redirect_url = None
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        context = {'form': form}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(data=request.POST)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return redirect(self.get_redirect_url())
+
+    def form_invalid(self, form):
+        context = {'form': form}
+        return render(self.request, self.template_name, context)
+
+    def get_redirect_url(self):
+        return self.redirect_url
