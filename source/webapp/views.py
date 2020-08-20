@@ -12,7 +12,7 @@ from .base_views import FormView as CustomFormView, ListView as CustomListView
 
 
 class IndexView(ListView):
-    template_name = 'index.html'
+    template_name = 'article/index.html'
     context_object_name = 'articles'
     paginate_by = 2
     paginate_orphans = 0
@@ -34,7 +34,7 @@ class IndexView(ListView):
 
 
 class ArticleView(TemplateView):
-    template_name = 'article_view.html'
+    template_name = 'article/article_view.html'
     paginate_comments_by = 2
     paginate_comments_orphans = 0
 
@@ -64,7 +64,7 @@ class ArticleView(TemplateView):
 
 
 class ArticleCreateView(CustomFormView):
-    template_name = 'article_create.html'
+    template_name = 'article/article_create.html'
     form_class = ArticleForm
 
     def form_valid(self, form):
@@ -76,7 +76,7 @@ class ArticleCreateView(CustomFormView):
 
 
 class ArticleUpdateView(FormView):
-    template_name = 'article_update.html'
+    template_name = 'article/article_update.html'
     form_class = ArticleForm
 
     def dispatch(self, request, *args, **kwargs):
@@ -112,7 +112,7 @@ class ArticleUpdateView(FormView):
 def article_delete_view(request, pk):
     article = get_object_or_404(Article, pk=pk)
     if request.method == 'GET':
-        return render(request, 'article_delete.html', context={'article': article})
+        return render(request, 'article/article_delete.html', context={'article': article})
     elif request.method == 'POST':
         article.delete()
         return redirect('index')
