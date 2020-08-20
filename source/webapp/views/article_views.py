@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotAllowed
 from django.urls import reverse
 from django.utils.timezone import make_naive
-from django.views.generic import ListView, TemplateView, FormView
+from django.views.generic import ListView, DetailView, FormView
 
 from webapp.models import Article
 from webapp.forms import ArticleForm, BROWSER_DATETIME_FORMAT, SimpleSearchForm
@@ -33,17 +33,16 @@ class IndexView(ListView):
         return data.order_by('-created_at')
 
 
-class ArticleView(CustomDetailView):
+class ArticleView(DetailView):
     template_name = 'article/article_view.html'
     model = Article
-    context_key = 'article'
     paginate_comments_by = 2
     paginate_comments_orphans = 0
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        comments, page, is_paginated = self.paginate_comments(context['article'])
+        comments, page, is_paginated = self.paginate_comments(self.object)
         context['comments'] = comments
         context['page_obj'] = page
         context['is_paginated'] = is_paginated
