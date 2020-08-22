@@ -8,29 +8,23 @@ from django.views.generic import ListView, DetailView, FormView, CreateView
 
 from webapp.models import Article
 from webapp.forms import ArticleForm, BROWSER_DATETIME_FORMAT, SimpleSearchForm
-from .base_views import CreateView as CustomCreateView
+from .base_views import SearchView
 
 
-class IndexView(ListView):
+class IndexView(SearchView):
     template_name = 'article/index.html'
     context_object_name = 'articles'
     paginate_by = 2
     paginate_orphans = 0
+    model = Article
+    ordering = ['-created_at']
+    search_fields = ['title__icontains', 'author__icontains']
 
     def get_queryset(self):
-        data = Article.objects.all()
-
+        data = super().get_queryset()
         if not self.request.GET.get('is_admin', None):
-            data = Article.objects.filter(status='moderated')
-
-        # http://localhost:8000/?search=ygjkjhg
-        form = SimpleSearchForm(data=self.request.GET)
-        if form.is_valid():
-            search = form.cleaned_data['search']
-            if search:
-                data = data.filter(Q(title__icontains=search) | Q(author__icontains=search))
-
-        return data.order_by('-created_at')
+            data = data.filter(status='moderated')
+        return data
 
 
 def article_mass_action_view(request):
