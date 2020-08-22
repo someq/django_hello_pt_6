@@ -8,9 +8,9 @@
         {% include 'partial/pagination.html' %}
     {% endif %}
 
-    <form action="{% url "index" %}" method="post">
+    <form action="{% url "article_mass_action" %}" method="post">
         {% csrf_token %}
-        <p class="mass-actions"><input type="submit" value="Delete selected"></p>
+        <p class="mass-actions"><input type="submit" name="delete" value="Delete selected"></p>
         {% for article in articles %}
             <div class="box">
                 <h3><a href="{% url "article_view" article.pk %}">{{ article.title }}</a></h3>

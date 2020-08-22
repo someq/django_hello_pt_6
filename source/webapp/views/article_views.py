@@ -17,11 +17,6 @@ class IndexView(ListView):
     paginate_by = 2
     paginate_orphans = 0
 
-    def post(self, request, *args, **kwargs):
-        ids = self.request.POST.getlist('selected_articles', [])
-        Article.objects.filter(id__in=ids).delete()
-        return redirect('index')
-
     def get_queryset(self):
         data = Article.objects.all()
 
@@ -36,6 +31,14 @@ class IndexView(ListView):
                 data = data.filter(Q(title__icontains=search) | Q(author__icontains=search))
 
         return data.order_by('-created_at')
+
+
+def article_mass_action_view(request):
+    if request.method == 'POST':
+        ids = request.POST.getlist('selected_articles', [])
+        if 'delete' in request.POST:
+            Article.objects.filter(id__in=ids).delete()
+    return redirect('index')
 
 
 class ArticleView(DetailView):
