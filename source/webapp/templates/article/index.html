@@ -7,16 +7,28 @@
     {% if is_paginated %}
         {% include 'partial/pagination.html' %}
     {% endif %}
-    {% for article in articles %}
-        <div class="box">
-            <h3><a href="{% url "article_view" article.pk %}">{{ article.title }}</a></h3>
-            <p>Статус: ({{ article.status }} | {{ article.get_status_display }})</p>
-            <p>{{ article.author }} | {{ article.created_at|date:"d.m.Y H:i:s" }}</p>
-            <p>Published at: {{ article.publish_at|date:"d.m.Y H:i:s" }}</p>
-            <p><a href="{% url 'article_update' article.pk %}">Update</a></p>
-            <p><a href="{% url 'article_delete' article.pk %}">Delete</a></p>
-        </div>
-    {% endfor %}
+
+    <form action="{% url "index" %}" method="post">
+        {% csrf_token %}
+        <p class="mass-actions"><input type="submit" value="Delete selected"></p>
+        {% for article in articles %}
+            <div class="box">
+                <h3><a href="{% url "article_view" article.pk %}">{{ article.title }}</a></h3>
+                <p>
+                    <label for="selected_articles-{{ article.pk }}">Select:</label>
+                    <input type="checkbox" name="selected_articles"
+                           id="selected_articles-{{ article.pk }}" value="{{ article.pk }}">
+                </p>
+                <p>Статус: ({{ article.status }} | {{ article.get_status_display }})</p>
+                <p>{{ article.author }} | {{ article.created_at|date:"d.m.Y H:i:s" }}</p>
+                <p>Published at: {{ article.publish_at|date:"d.m.Y H:i:s" }}</p>
+                <p><a href="{% url 'article_update' article.pk %}">Update</a></p>
+                <p><a href="{% url 'article_delete' article.pk %}">Delete</a></p>
+            </div>
+        {% endfor %}
+    </form>
+
+
     {% if is_paginated %}
         {% include 'partial/pagination.html' %}
     {% endif %}

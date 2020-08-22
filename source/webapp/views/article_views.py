@@ -17,6 +17,11 @@ class IndexView(ListView):
     paginate_by = 2
     paginate_orphans = 0
 
+    def post(self, request, *args, **kwargs):
+        ids = self.request.POST.getlist('selected_articles', [])
+        Article.objects.filter(id__in=ids).delete()
+        return redirect('index')
+
     def get_queryset(self):
         data = Article.objects.all()
 
