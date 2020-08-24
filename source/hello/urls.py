@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from webapp.views import IndexView, ArticleCreateView, ArticleView, \
     ArticleUpdateView, article_delete_view, \
-    ArticleCommentCreateView, article_mass_action_view
+    ArticleCommentCreateView, article_mass_action_view, \
+    CommentUpdateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +29,7 @@ urlpatterns = [
     path('article/<int:pk>/delete/', article_delete_view, name='article_delete'),
     path('article/mass-action/', article_mass_action_view, name='article_mass_action'),
 
-    path('article/<int:pk>/comments/add', ArticleCommentCreateView.as_view(),
-         name='article_comment_add')
+    path('article/<int:pk>/comments/add/', ArticleCommentCreateView.as_view(),
+         name='article_comment_add'),
+    path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment_update')
 ]

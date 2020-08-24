@@ -24,6 +24,7 @@
             <div class="box">
                 <h4>{{ comment.author }} ({{ comment.created_at }})</h4>
                 <div class="pre">{{ comment.text }}</div>
+                <p><a href="{% url 'comment_update' comment.pk %}">Update</a></p>
             </div>
         {% empty %}
             <p>Нет комментариев</p>
