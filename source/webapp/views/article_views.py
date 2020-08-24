@@ -3,11 +3,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotAllowed
 from django.urls import reverse
 from django.utils.timezone import make_naive
-from django.views.generic import DetailView, CreateView
+from django.views.generic import DetailView, CreateView, UpdateView
 
 from webapp.models import Article
 from webapp.forms import ArticleForm, BROWSER_DATETIME_FORMAT
-from .base_views import SearchView, UpdateView
+from .base_views import SearchView
 
 
 class IndexView(SearchView):
@@ -75,19 +75,18 @@ class ArticleUpdateView(UpdateView):
     template_name = 'article/article_update.html'
     form_class = ArticleForm
     model = Article
-    context_key = 'article'
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['initial'] = {'publish_at': make_naive(self.object.publish_at)\
-            .strftime(BROWSER_DATETIME_FORMAT)}
-        return kwargs
-
-    # def get_initial(self):
-    #     return {'publish_at': make_naive(self.article.publish_at)\
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     kwargs['initial'] = {'publish_at': make_naive(self.object.publish_at)\
     #         .strftime(BROWSER_DATETIME_FORMAT)}
+    #     return kwargs
 
-    def get_redirect_url(self):
+    def get_initial(self):
+        return {'publish_at': make_naive(self.object.publish_at)\
+            .strftime(BROWSER_DATETIME_FORMAT)}
+
+    def get_success_url(self):
         return reverse('article_view', kwargs={'pk': self.object.pk})
 
 
