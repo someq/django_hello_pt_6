@@ -1,13 +1,13 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotAllowed
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.timezone import make_naive
 from django.views.generic import DetailView, CreateView, UpdateView
 
 from webapp.models import Article
 from webapp.forms import ArticleForm, BROWSER_DATETIME_FORMAT
-from .base_views import SearchView
+from .base_views import SearchView, DeleteView
 
 
 class IndexView(SearchView):
@@ -90,12 +90,8 @@ class ArticleUpdateView(UpdateView):
         return reverse('article_view', kwargs={'pk': self.object.pk})
 
 
-def article_delete_view(request, pk):
-    article = get_object_or_404(Article, pk=pk)
-    if request.method == 'GET':
-        return render(request, 'article/article_delete.html', context={'article': article})
-    elif request.method == 'POST':
-        article.delete()
-        return redirect('index')
-    else:
-        return HttpResponseNotAllowed(permitted_methods=['GET', 'POST'])
+class ArticleDeleteView(DeleteView):
+    template_name = 'article/article_delete.html'
+    model = Article
+    redirect_url = reverse_lazy('index')
+    context_key = 'article'
