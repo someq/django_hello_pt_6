@@ -15,6 +15,7 @@ class ArticleCommentCreateView(CreateView):
         comment = form.save(commit=False)
         comment.article = article
         comment.save()
+        # form.save_m2m()  ## для сохранения связей многие-ко-многим
         return redirect('article_view', pk=article.pk)
 
     # def form_valid(self, form):
