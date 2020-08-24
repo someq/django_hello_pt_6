@@ -1,14 +1,13 @@
 from django.core.paginator import Paginator
-from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotAllowed
 from django.urls import reverse
 from django.utils.timezone import make_naive
-from django.views.generic import ListView, DetailView, FormView, CreateView
+from django.views.generic import DetailView, CreateView
 
 from webapp.models import Article
-from webapp.forms import ArticleForm, BROWSER_DATETIME_FORMAT, SimpleSearchForm
-from .base_views import SearchView
+from webapp.forms import ArticleForm, BROWSER_DATETIME_FORMAT
+from .base_views import SearchView, UpdateView
 
 
 class IndexView(SearchView):
@@ -72,38 +71,24 @@ class ArticleCreateView(CreateView):
         return reverse('article_view', kwargs={'pk': self.object.pk})
 
 
-class ArticleUpdateView(FormView):
+class ArticleUpdateView(UpdateView):
     template_name = 'article/article_update.html'
     form_class = ArticleForm
-
-    def dispatch(self, request, *args, **kwargs):
-        self.article = self.get_object()
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['article'] = self.article
-        return context
-
-    def get_initial(self):
-        return {'publish_at': make_naive(self.article.publish_at)\
-            .strftime(BROWSER_DATETIME_FORMAT)}
+    model = Article
+    context_key = 'article'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['instance'] = self.article
+        kwargs['initial'] = {'publish_at': make_naive(self.object.publish_at)\
+            .strftime(BROWSER_DATETIME_FORMAT)}
         return kwargs
 
-    def form_valid(self, form):
-        self.article = form.save()
-        return super().form_valid(form)
+    # def get_initial(self):
+    #     return {'publish_at': make_naive(self.article.publish_at)\
+    #         .strftime(BROWSER_DATETIME_FORMAT)}
 
-    def get_success_url(self):
-        return reverse('article_view', kwargs={'pk': self.article.pk})
-
-    def get_object(self):
-        pk = self.kwargs.get('pk')
-        return get_object_or_404(Article, pk=pk)
+    def get_redirect_url(self):
+        return reverse('article_view', kwargs={'pk': self.object.pk})
 
 
 def article_delete_view(request, pk):
